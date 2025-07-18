@@ -14,4 +14,5 @@ buy_me_a_coffee: # Replace with a single Buy Me a Coffee username
 thanks_dev: # Replace with a single thanks.dev username
 custom: <script 
   src="https://www.paypal.com/sdk/js?client-id=BAANp3xv5w4fLJo6nAht74tyhsnAew3dXXblJpXG77fS04S_M5yVD5A2QES6q7OoSMXbt-8j3ZQC9km9WU&components=hosted-buttons&disable-funding=venmo&currency=USD">
+</script>
  # Replace with up to 4 custom sponsorship URLs e.g., ['link1', 'link2']
