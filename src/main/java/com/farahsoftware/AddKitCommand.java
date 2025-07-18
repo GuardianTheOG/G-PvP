@@ -10,8 +10,6 @@ import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
-import net.kyori.adventure.platform.bukkit.BukkitAudiences;
-import net.kyori.adventure.text.Component;
 
 public class AddKitCommand implements CommandExecutor{
     private final gpvp plugin;
