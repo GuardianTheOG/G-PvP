@@ -1,0 +1,5 @@
+#Default Settings
+PvPRegion: "pvp"
+EnterMessage: "<dark_red><bold>You have entered the PvP Arena. Keep Inventory is OFF"
+ExitMessage: "<dark_green><bold>You have exited the PvP Arena."
+Kits:

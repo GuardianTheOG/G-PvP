@@ -1,0 +1,9 @@
+name: G-PvP
+version: 1.0
+main: co.za.farahsoftware.gpvp
+api-version: 1.20
+commands:
+  addpvpkit:
+    description: Save items as Kit for PvP
+    usage: /addpvpkit <kit>
+    permission: gpvp.admin
