@@ -28,7 +28,8 @@ import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 
 public class gpvp extends JavaPlugin {
     private BukkitAudiences adventure;
-    private PvpRegionListener PvPRegionListener;
+    public PvpRegionListener PvPRegionListener;
+    public PvPKillListener PvPKillListener;
 
     @Override
     public void onEnable() {
@@ -37,6 +38,7 @@ public class gpvp extends JavaPlugin {
 
         this.adventure().console().sendMessage(MiniMessage.miniMessage().deserialize("<dark_green><bold><<<<< Plugin enabled >>>>>"));
         getServer().getPluginManager().registerEvents(new PvpRegionListener(this), this);
+        getServer().getPluginManager().registerEvents(new PvPKillListener(this), this);
         this.getCommand("addpvpkit").setExecutor(new AddKitCommand(this));
         this.adventure = BukkitAudiences.create(this);
         PvPRegionListener.loadPvPState();
