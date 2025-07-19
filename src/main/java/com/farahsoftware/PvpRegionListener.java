@@ -7,6 +7,7 @@ import com.sk89q.worldguard.protection.ApplicableRegionSet;
 import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.RegionContainer;
 import net.kyori.adventure.text.minimessage.MiniMessage;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -21,12 +22,14 @@ import java.util.*;
 public class PvpRegionListener implements Listener {
 
     private final gpvp plugin;
+    private final FileConfiguration config;
     private final Set<UUID> playersInPvP = new HashSet<>();
     private File PvPStateFile;
     private YamlConfiguration PvPStateConfig;
 
     public PvpRegionListener(gpvp plugin) {
         this.plugin = plugin;
+        this.config = plugin.getConfig();
     }
 
     public Set<UUID> getPlayerInPvP() {
@@ -103,13 +106,16 @@ public class PvpRegionListener implements Listener {
     }
 
     private void givePvPKit(Player player, String kitName) {
-        List<String> itemNames = plugin.getConfig().getStringList("Kits." + kitName);
-        for (String name : itemNames) {
-            try {
-                Material mat = Material.valueOf(name.toUpperCase());
-                player.getInventory().addItem(new ItemStack(mat));
-            } catch (IllegalArgumentException e) {
-                plugin.getLogger().warning("Invalid item in kit " + kitName + ": " + name);
+        List<Map<String, Object>> serializedItems = (List<Map<String, Object>>) (List<?>) config.getMapList("Kits." + kitName);
+
+        ItemStack[] kitItems = new ItemStack[serializedItems.size()];
+
+        for (int i = 0; i < serializedItems.size(); i++) {
+            Map<String, Object> itemData = serializedItems.get(i);
+            if (itemData != null) {
+                kitItems[i] = ItemStack.deserialize(itemData);
+            } else {
+                kitItems[i] = null;
             }
         }
     }

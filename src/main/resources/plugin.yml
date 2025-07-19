@@ -1,9 +1,16 @@
 name: G-PvP
 version: 1.0
-main: co.za.farahsoftware.gpvp
+main: com.farahsoftware.gpvp
 api-version: 1.20
 commands:
-  addpvpkit:
-    description: Save items as Kit for PvP
-    usage: /addpvpkit <kit>
-    permission: gpvp.admin
+  gpvp:
+    description: Main G-PvP Command
+    usage: /gpvp <addkit | setcheckpoint | getloot | help>
+    Alias: [gpvp]
+    permission:
+    gpvp.loot:
+        description: Allows players to retrieve their loot from PvP.
+        default: true
+    gpvp.admin:
+      description: Allows admins to set checkpoints and add kits.
+      default: op
