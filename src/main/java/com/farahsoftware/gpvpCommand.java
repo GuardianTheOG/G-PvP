@@ -2,6 +2,7 @@ package com.farahsoftware;
 
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -9,9 +10,12 @@ import org.bukkit.command.TabCompleter;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -137,13 +141,32 @@ public class gpvpCommand implements CommandExecutor, TabCompleter {
         String action = args[1].toLowerCase();
 
         if (action.equals("start")) {
-            ItemStack chest = new ItemStack((Material.CHEST));
-            chest.getItemMeta().setDisplayName("Check Point Setter");
+            ItemStack chest = new ItemStack(Material.CHEST);
+            ItemMeta meta = chest.getItemMeta();
+            if (meta != null) {
+                meta.displayName(MiniMessage.miniMessage().deserialize("<color:#00ff04><bold>Checkpoint Setter"));
+                meta.getPersistentDataContainer().set(new NamespacedKey(plugin, "gpvp_checkpoint"), PersistentDataType.INTEGER, 1);
+                chest.setItemMeta(meta);
+            }
             player.getInventory().addItem(chest);
             player.sendMessage(MiniMessage.miniMessage().deserialize("<dark_green>Place the chest where you want to set a block for PvP'er to svae their loot."));
-        } else if (action.equals("stop")) {
+        }
+
+        else if (action.equals("stop")) {
+            ItemStack[] contents = player.getInventory().getContents();
+            for (int i = 0; i < contents.length; i++) {
+                ItemStack item = contents[i];
+                if (item != null && item.getType() == Material.CHEST) {
+                    ItemMeta meta = item.getItemMeta();
+                    if (meta != null && meta.getPersistentDataContainer().has(new NamespacedKey(plugin, "gpvp_checkpoint"), PersistentDataType.INTEGER)) {
+                        player.getInventory().setItem(i, null);
+                    }
+                }
+            }
             player.sendMessage(MiniMessage.miniMessage().deserialize("<color:#ff8800>Checkpoint saved to config.yml. Please confirm locations have been saved."));
-        } else {
+        }
+
+        else {
             player.sendMessage(MiniMessage.miniMessage().deserialize("<dark_red>Invalid argument: Usage /gpvp setcheckpoint <start | stop>"));
         }
 
